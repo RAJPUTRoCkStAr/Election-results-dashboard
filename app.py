@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 from streamlit_option_menu import option_menu
 import random
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide",page_title='Election Results')
 st.write('election commission of india')
 tab = option_menu(None, ["Parliament Constituency General", "Assembly Constituency General", "Assembly Constituency Bye"], orientation="horizontal", styles={
         "container": {"padding": "10!important", "background-color": "red"},
@@ -47,11 +47,12 @@ if tab == 'Parliament Constituency General':
     "Nationalist Congress Party - Sharadchandra Pawar - NCPSP":"#457a8b",
     "Shiv Sena ":"#d2691e",
     "Others":"#b3b3b3",
-    "Total":"black"
-}
+    "Total":"transparent"
+    }
         fig = px.pie(first_data, values=first_data['Won'], names=first_data['Party'], title='Votes Distribution by State',color='Party', color_discrete_map=color_discrete_map)
-        fig.update_traces(hole=0.4, hoverinfo="label+percent+name", sort=False)
+        fig.update_traces(hole=0.6, hoverinfo="label+name", sort=False)
         fig.update_layout(height=700, width=800)
+        fig.update_traces(rotation=67)
         st.plotly_chart(fig)
     with col5:
         st.empty()
@@ -70,7 +71,99 @@ if tab == 'Parliament Constituency General':
         st.dataframe(second_data,use_container_width=True,height=600,hide_index=True)
 
 elif tab == 'Assembly Constituency General':
-    st.write('fsdfjgosdjfog')
+    st.subheader('General Election to Assembly Constituencies: Trends & Results June-2024', divider='rainbow')
+
+    andh = ['TDP', 'JnP', 'YSRCP', 'BJP']
+    wandh = [135, 21, 11, 8]
+
+    odi = ['BJP', 'BJD', 'INC', 'IND', 'CPI(M)']
+    wodi = [78, 51, 14, 1, 3]
+
+    col8, col9 = st.columns([2, 2])
+    with col8:
+        st.markdown(f"""
+        <div style="background-color: teal; border: solid 2px teal; border-radius: 10px; overflow: hidden; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <div style="background-color: white; color: teal;font-size:18.4px;font-weight:500; text-align: center; padding: 10px; border-bottom: solid 2px teal;">
+            Andhra Pradesh
+        </div>
+        <div style="padding: 20px; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <p style="margin: 10px 0; font-size: 1.2em;">Assembly Constituency</p>
+            <p style="background-color: grey; color: white; padding: 10px; font-size: 1.5em; border-radius: 5px; margin: 0;">175</p>
+        </div>
+            <p style="font-size:12px;color:white;padding-left:15px">  Status of Top Five Parties</p>
+        <div style="background-color: white; padding: 20px; border-radius: 5px; margin-top: 20px;">
+            <table style="width: 80%;color:black;border-collapse: collapse;">
+                <tr style="text-align: left; padding: 8px; background-color: teal; color: white;">
+                    <th style="text-align: left; padding: 12px;">Parties</th>
+                    <th style="text-align: left; padding: 12px;">Leading/Won</th>
+                </tr>
+                <tr style="background-color: #f2f2f2;">
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{andh[0]}</td>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{wandh[0]}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{andh[1]}</td>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{wandh[1]}</td>
+                </tr>
+                <tr style="background-color: #f2f2f2;">
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{andh[2]}</td>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{wandh[2]}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{andh[3]}</td>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{wandh[3]}</td>
+                </tr>
+            </table>
+        </div>
+        <div style="text-align:center; margin-top:20px;margin-bottom:20px;">
+    <button style="background-color:white;border-radius:15px; color: black; padding: 10px 20px; border: solid black;">Details ></button>
+</div>
+    </div>
+    """, unsafe_allow_html=True)
+    with col9:
+        st.markdown(f"""
+            <div style="background-color: maroon; border: solid 2px maroon; border-radius: 10px; overflow: hidden; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div style="background-color: white;font-size:18.4px;font-weight:500 ;color: maroon; text-align: center; padding: 10px; border-bottom: solid 2px maroon;">
+            Odisha
+            </div>
+            <div style="padding: 20px; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <p style="margin: 10px 0; font-size: 1.2em;">Assembly Constituency</p>
+            <p style="background-color: grey; color: white; padding: 10px; font-size: 1.5em; border-radius: 5px; margin: 0;">147</p>
+            </div>
+            <p style="font-size:12px;color:white;padding-left:15px">  Status of Top Five Parties</p>
+            <div style="background-color: white; padding: 20px; border-radius: 5px; margin-top: 20px;">
+                <table style="width: 100%;color:black;border-collapse: collapse;">
+                    <tr style="text-align: left; padding: 8px; background-color: maroon; color: white;">
+                    <th style="text-align: left; padding: 12px;">Parties</th>
+                    <th style="text-align: left; padding: 12px;">Leading/Won</th>
+                    </tr>
+                    <tr style="background-color: #f2f2f2;">
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{odi[0]}</td>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{wodi[0]}</td>
+                    </tr>
+                <tr>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{odi[1]}</td>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{wodi[1]}</td>
+                </tr>
+                <tr style="background-color: #f2f2f2;">
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{odi[2]}</td>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{wodi[2]}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{odi[3]}</td>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{wodi[3]}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{odi[4]}</td>
+                    <td style="text-align: left;font-size:13.6px;font-weight:600; padding: 12px;">{wodi[4]}</td>
+                </tr>
+            </table>
+        </div>
+    <div style="text-align:center; margin-top:20px;margin-bottom:20px">
+    <button style="background-color: white;border-radius:15px; color: black; padding: 10px 20px; border: solid black;">Details ></button>
+    </div>
+    </div>
+    """, unsafe_allow_html=True)
 elif tab == 'Assembly Constituency Bye':
     st.write('Disclaimer: ECI is displaying the information as being filled in the system by the Returning Officers from their respective Counting Centres. The final data for each AC/PC will be shared in Form-20.')
     st.header('Bye Election to Assembly Constituencies: Results June-2024', divider='green')
