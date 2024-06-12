@@ -52,7 +52,7 @@ if tab == 'Parliament Constituency General':
         fig = px.pie(first_data, values=first_data['Won'], names=first_data['Party'], title='Votes Distribution by State',color='Party', color_discrete_map=color_discrete_map)
         fig.update_traces(hole=0.6, hoverinfo="label+name", sort=False)
         fig.update_layout(height=700, width=800)
-        fig.update_traces(rotation=67)
+        fig.update_traces(rotation=90)
         st.plotly_chart(fig)
     with col5:
         st.empty()
