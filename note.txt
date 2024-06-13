@@ -1,0 +1,17 @@
+ def read_pages(party):
+            return f"?party={party}"
+        def create_clickable_link(party, won):
+            return f'<a href="{read_pages(party)}" target="_blank">{won}</a>'
+        st.subheader('Party Wise Results Status')
+        second_data['Won'] = second_data.apply(lambda row: create_clickable_link(row['Party'], row['Won']), axis=1)
+        st.markdown(second_data.to_html(escape=False, index=False), unsafe_allow_html=True)
+
+        query_params = st.experimental_get_query_params()
+        if 'party' in query_params:
+            selected_party = query_params['party'][0]
+            st.write(f'You selected: {selected_party}')
+        try:
+            pages = pd.read_csv(f'partywise/{selected_party}.csv')
+            st.dataframe(pages)
+        except FileNotFoundError:
+            st.error(f"No data available for {selected_party}")

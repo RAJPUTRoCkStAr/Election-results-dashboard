@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 from streamlit_option_menu import option_menu
 import random
+from partywise import detail_page
 st.set_page_config(layout="wide",page_title='Election Results')
 st.write('election commission of india')
 tab = option_menu(None, ["Parliament Constituency General", "Assembly Constituency General", "Assembly Constituency Bye"], orientation="horizontal", styles={
@@ -34,7 +35,7 @@ if tab == 'Parliament Constituency General':
         st.empty()
     with col4:
         first_data = pd.read_csv('gauge-chart.csv')
-        second_data = pd.read_csv('firstpage-table.csv')
+        second_data = pd.read_csv('some_election_data.csv')
         color_discrete_map = {
     "Bharatiya Janata Party - BJP": "#ff8331",
     "Indian National Congress - INC": "#17aaed",
@@ -67,9 +68,16 @@ if tab == 'Parliament Constituency General':
         st.plotly_chart(fig2)
 
     with col7:
+        def create_clickable_link(party, won):
+            return f'<a href="?party={party}" target="_blank">{won}</a>'
         st.subheader('Party Wise Results Status')
-        st.dataframe(second_data,use_container_width=True,height=600,hide_index=True)
+        second_data['Won'] = second_data.apply(lambda row: create_clickable_link(row['Party'], row['Won']), axis=1)
+        st.markdown(second_data.to_html(escape=False, index=False), unsafe_allow_html=True)
+        if second_data:
+            detail_page()
+        
 
+    
 elif tab == 'Assembly Constituency General':
     st.subheader('General Election to Assembly Constituencies: Trends & Results June-2024', divider='rainbow')
 
@@ -116,7 +124,7 @@ elif tab == 'Assembly Constituency General':
             </table>
         </div>
         <div style="text-align:center; margin-top:20px;margin-bottom:20px;">
-    <button style="background-color:white;border-radius:15px; color: black; padding: 10px 20px; border: solid black;">Details ></button>
+    <button  style="background-color:white;border-radius:15px; color: black; padding: 10px 20px; border: solid black;">Details ></button>
 </div>
     </div>
     """, unsafe_allow_html=True)
