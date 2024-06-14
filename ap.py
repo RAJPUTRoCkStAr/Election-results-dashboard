@@ -1,54 +1,44 @@
 import streamlit as st
 import pandas as pd
+# Define the options for the selectbox
+options = [
+    "Select State Wise",
+    "Andaman & Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
+    "Chandigarh", "Chhattisgarh", "Dadra & Nagar Haveli and Daman & Diu", "Goa", "Gujarat", 
+    "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", 
+    "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", 
+    "Mizoram", "Nagaland", "NCT OF Delhi", "Odisha", "Puducherry", "Punjab", "Rajasthan", 
+    "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+]
 
-# Function to generate the URL for each party
-def read_pages(party):
-    return f"?party={party}"
+# Create the selectbox
+selected_option = st.selectbox('Select State wise', options)
 
-# Function to create clickable links
-def create_clickable_link(party, won):
-    return f'<a href="{read_pages(party)}">{won}</a>'
+# Function to display information for Andaman & Nicobar Islands
+def andaman_nicobar_islands_page():
+    st.write("Andaman & Nicobar Islands page content goes here.")
 
-# Function to display party details
-def display_party_details(selected_party):
-    try:
-        pages = pd.read_csv(f'partywise/{selected_party}.csv')
-        st.dataframe(pages)
-    except FileNotFoundError:
-        st.error(f"No data available for {selected_party}")
+# Add similar functions for other states as needed
+def bihar_page():
+    st.write("Bihar page content goes here.")
+    # Load and process the data for Bihar
+    df = pd.read_csv('state-wise/Bihar.csv')
+    dat = df[df['won status'] == 'won']
+    party_names = dat['Party Name']
+    party_counts = party_names.value_counts()
+    for party_name, won_count in party_counts.items():
+        st.write(f'Party: {party_name}, Wins: {won_count}')
 
-# Main function
-def main():
-    st.set_page_config(page_title='Party Details')
-    query_params = st.experimental_get_query_params()
-    if 'party' in query_params:
-        selected_party = query_params['party'][0]
-        st.write(f'Details for Party: {selected_party}')
-        display_party_details(selected_party)
+# Use a dictionary to map options to functions
+page_functions = {
+    "Andaman & Nicobar Islands": andaman_nicobar_islands_page,
+    "Bihar": bihar_page,
+    # Add more mappings for other states
+}
 
-        # Add a button to redirect back to the main page with the selected party
-        st.write("\n")
-        st.write("\n")
-        st.write("\n")
-        st.write("\n")
-        st.write("\n")
-        if st.button("Go back to Main Page"):
-            st.experimental_rerun()
-    else:
-        st.write("No party selected.")
-
-if __name__ == "__main__":
-    st.subheader('Party Wise Results Status')
-    data = {
-        'Party': ['Party A', 'Party B', 'Party C'],
-        'Won': [100, 150, 200]
-    }
-    second_data = pd.DataFrame(data)
-    second_data['Won'] = second_data.apply(lambda row: create_clickable_link(row['Party'], row['Won']), axis=1)
-    st.markdown(second_data.to_html(escape=False, index=False), unsafe_allow_html=True)
-
-    query_params = st.experimental_get_query_params()
-    if 'party' in query_params:
-        selected_party = query_params['party'][0]
-        st.write(f'You selected: {selected_party}')
-        main()
+# Check if the selected option has a corresponding page function
+if selected_option in page_functions:
+    # Call the function to render the appropriate page
+    page_functions[selected_option]()
+else:
+    st.write("Please select a state to view details.")

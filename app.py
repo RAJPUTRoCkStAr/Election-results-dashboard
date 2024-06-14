@@ -4,6 +4,7 @@ import plotly.express as px
 from streamlit_option_menu import option_menu
 import random
 import warnings
+from Stwise import some
 
 warnings.filterwarnings("ignore", message="Please replace `st.experimental_get_query_params` with `st.query_params`.*")
 
@@ -45,14 +46,15 @@ else:
             st.subheader('General Election to Parliamentary Constituencies: Trends & Results June-2024 :')
 
         with col5:
-            options = [ 
+            options = [ "Select State Wise",
                        "Andaman & Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", 
                        "Chandigarh", "Chhattisgarh", "Dadra & Nagar Haveli and Daman & Diu", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", 
                        "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", 
                        "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "NCT OF Delhi", "Odisha", "Puducherry", 
                        "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"]
-            selected_option = st.selectbox('Select State wise', options,placeholder="Select State Wise")
-        
+            selected_option = st.selectbox('Select State wise', options)
+            
+
         col6, col7, col8 = st.columns([1, 4, 1])
         
         with col6:
@@ -92,7 +94,6 @@ else:
             fig2 = px.pie(second_data, values='Won', names='Party', color='Party')
             fig2.update_traces(hole=0.4, sort=False, hoverinfo='label',textinfo='none')
             fig2.update_layout(height=1200, width=800)
-
             fig2.update_layout(legend=dict(orientation='h', y=-1.7, yanchor='bottom', x=0.5, xanchor='center'))
             st.plotly_chart(fig2)
 
