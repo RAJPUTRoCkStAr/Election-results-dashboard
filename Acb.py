@@ -3,7 +3,7 @@ import pandas as pd
 import random
 def acb_show():
     st.header('Bye Election to Assembly Constituencies: Results June-2024', divider='green')
-    data = pd.read_csv('last_page.csv')
+    data = pd.read_csv('data/last_page.csv')
     party_colors = {
     "Bharatiya Janata Party": "blue",
     "All India Trinamool Congress": "yellow",

@@ -1,5 +1,0 @@
-def create_clickable_link(party, won):
-                return f'<a href="?party={party}" target="_blank">{won}</a>'
-            st.subheader(':red-background[Party Wise Results Status]')
-            second_data['Won'] = second_data.apply(lambda row: create_clickable_link(row['Party'], row['Won']), axis=1)
-            st.markdown(second_data.to_html(escape=False, index=False), unsafe_allow_html=True)

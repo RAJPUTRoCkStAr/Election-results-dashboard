@@ -41,7 +41,7 @@ def ac_lss(selected_option,da):
         st.write("State not found in the data.")    
 
 def stwise_show(selected_option):
-    da = pd.read_csv('electiondata4.csv')
+    da = pd.read_csv('data/electiondata4.csv')
     won_data = da[da['won status'] == 'won']
     won_data_sorted = won_data.sort_values(by='state')
     party_info = {

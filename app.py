@@ -6,6 +6,7 @@ from Acb import acb_show
 from Acg import acg_show
 from Stwise import stwise_show
 
+
 st.set_page_config(layout="wide", page_title='Election Results')
 
 query_params = st.experimental_get_query_params()
@@ -13,9 +14,10 @@ selected_party = query_params.get("party", [None])[0]
 selected_state = query_params.get("state", [None])[0]
 selected_constituency = query_params.get("constituency", [None])[0]
 
+
 if selected_constituency:
     try:
-        pages = pd.read_csv('electiondata4.csv')
+        pages = pd.read_csv('/data/electiondata4.csv')
         constituency = pages[pages['constituency'] == selected_constituency]
         selected_state = constituency['state'].iloc[0] if not constituency.empty else "Unknown State"
         st.subheader("General Election to Parliamentary Constituencies: Trends & Results June-2024")
@@ -30,14 +32,16 @@ if selected_constituency:
             num_constituencies = len(constituency)
             columns = st.columns(min(5, num_constituencies))
             for index, row in constituency.iterrows():
+                textcolor = "green" if row['won status'] == 'won' else "red"
                 with columns[index % 5]:
                     st.markdown(
                         f"""
                         <div style="background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; margin-bottom: 20px;">
                             <div style="padding: 0 20px;">
-                                <p><strong>Party:</strong> {row["Party Name"]}</p>
-                                <p><strong>Votes:</strong> {row["votes"]}</p>
-                                <!-- Add more details as needed -->
+                                <p style="color: {textcolor};font-weight: 600;text-transform: capitalize;">{row['won status']}</p>
+                                <p style="color: {textcolor};">{row["votes"]}</p>
+                                <p style="font-size: 17.6px;font-weight:600;color:#094DE0">{row["Name"]}</p>
+                                <p style="color:blue;font-weight:500;font-size:16px">{row["Party Name"]}</p>
                             </div>
                         </div>
                         """,
@@ -55,7 +59,7 @@ if selected_party:
     with col6:
         st.empty()
     try:
-        pages = pd.read_csv(f'partywise/{selected_party}.csv')
+        pages = pd.read_csv(f'data/partywise/{selected_party}.csv')
 
         def create_clickable_party(constituency):
             return f'<a href="?constituency={constituency}" target="_blank">{constituency}</a>'
@@ -114,8 +118,8 @@ else:
             st.empty()
 
         with col13:
-            first_data = pd.read_csv('gauge-chart.csv')
-            second_data = pd.read_csv('some_election_data.csv')
+            first_data = pd.read_csv('data/gauge-chart.csv')
+            second_data = pd.read_csv('data/some_election_data.csv')
             color_discrete_map = {
                 "Bharatiya Janata Party - BJP": "#ff8331",
                 "Indian National Congress - INC": "#17aaed",
