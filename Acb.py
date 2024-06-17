@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd 
 import random
 def acb_show():
-    st.write('Disclaimer: ECI is displaying the information as being filled in the system by the Returning Officers from their respective Counting Centres. The final data for each AC/PC will be shared in Form-20.')
     st.header('Bye Election to Assembly Constituencies: Results June-2024', divider='green')
     data = pd.read_csv('last_page.csv')
     party_colors = {
