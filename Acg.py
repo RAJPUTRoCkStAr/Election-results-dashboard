@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd 
-from Acgsecond import ascend_show,ascendse_show
+from Acgsecond import andhra_show, odisha_show
 
-def acg_show():
+def main():
     st.subheader('General Election to Assembly Constituencies: Trends & Results June-2024')
 
     andh = ['TDP', 'JnP', 'YSRCP', 'BJP']
@@ -49,9 +49,9 @@ def acg_show():
             </div>
             </div>
         """, unsafe_allow_html=True)
-        f_btn =  st.button("Details >")
-        if f_btn:
-            ascend_show()
+        andhra_btn =  st.button("Details >")
+        if andhra_btn:
+            st.experimental_reroute("/andhra_show")  # Navigate to Andhra Pradesh details page
 
     with col2:
         st.markdown(f"""
@@ -94,6 +94,6 @@ def acg_show():
             </div>
             </div>
         """, unsafe_allow_html=True)
-        s_btn =  st.button("Detail>")
-        if s_btn:
-            ascendse_show()
+        odisha_btn =  st.button("Detail>")
+        if odisha_btn:
+            st.experimental_reroute("/odisha_show") 

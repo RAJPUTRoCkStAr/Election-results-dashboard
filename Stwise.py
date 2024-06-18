@@ -21,10 +21,10 @@ def ac_lss(selected_option,da):
         for constituency in constituencies:
                 df_constituency = df_state[df_state['constituency'] == constituency]
                 df_constituency = df_constituency.sort_values(by='votes', ascending=False)
-                leading_candidate = df_constituency.iloc[0]['Name']
-                leading_party = df_constituency.iloc[0]['Party Name']
-                trailing_candidate = df_constituency.iloc[-1]['Name']
-                trailing_party = df_constituency.iloc[-1]['Party Name']
+                leading_candidate = df_constituency.iloc[0]['name']
+                leading_party = df_constituency.iloc[0]['party_name']
+                trailing_candidate = df_constituency.iloc[-1]['name']
+                trailing_party = df_constituency.iloc[-1]['party_name']
                 margin = df_constituency.iloc[0]['votes'] - df_constituency.iloc[1]['votes']
                 status = 'Result Declared'
                 constituency_details.append({'Constituency': constituency,
@@ -41,8 +41,8 @@ def ac_lss(selected_option,da):
         st.write("State not found in the data.")    
 
 def stwise_show(selected_option):
-    da = pd.read_csv('data/electiondata4.csv')
-    won_data = da[da['won status'] == 'won']
+    da = pd.read_csv('data/electiondata.csv')
+    won_data = da[da['won_status'] == 'won']
     won_data_sorted = won_data.sort_values(by='state')
     party_info = {
     "Bharatiya Janata Party": {"color": "#ff8331", "short_name": "BJP"},
@@ -89,9 +89,9 @@ def stwise_show(selected_option):
     }
     def get_winners_by_state(state_name):
         state_winners = won_data_sorted[won_data_sorted['state'] == state_name]
-        return state_winners[['won status', 'Party Name']]
+        return state_winners[['won_status', 'party_name']]
     state_winners_data = get_winners_by_state(selected_option)
-    party_counts = state_winners_data['Party Name'].value_counts()
+    party_counts = state_winners_data['party_name'].value_counts()
     cols = st.columns(len(party_counts))
     st.subheader(":red-background[Party Wise Results]")
     for col, (party, count) in zip(cols, party_counts.items()):
@@ -119,15 +119,32 @@ def stwise_show(selected_option):
         with col5:
             st.subheader(f':red-background[Constituency Wise Results]')
         with col6:
-            st.write("map is having error")
-
+            # api_key = 'df5939cb282b454096bf26602620f87e'
+            # def get_coordinates(location, api_key):
+            #     geolocator = OpenCage(api_key)
+            #     location = geolocator.geocode(location)
+            #     if location:
+            #         latitude = location.latitude
+            #         longitude = location.longitude
+            #         return latitude, longitude
+            #     else:
+            #         return None, None
+            # fig5 = px.choropleth_mapbox(da, lat="latitude", lon="longitude",
+            #                  color="Party Name",
+            #                  mapbox_style="carto-positron",  
+            #                  zoom=3,  
+            #                  center={"lat": 24, "lon": 78}  
+            #                  )
+            # fig5.update_layout(margin={"r":0, "t":0, "l":0, "b":0})
+            # st.plotly_chart(fig5)
+            st.write('i m coming soon')
     col7,col8 = st.columns([2,2])
     with col7:
         st.subheader(':red-background[Party Wise Vote Share]')
         state_data = da[da['state'] == selected_option]
-        result_df = state_data[['constituency', 'Party Name', 'votes']]
+        result_df = state_data[['constituency', 'party_name', 'votes']]
         result_df = result_df.drop_duplicates()
-        fig3 = px.pie(result_df, values='votes', names='Party Name', color='Party Name')
+        fig3 = px.pie(result_df, values='votes', names='party_name', color='party_name')
         fig3.update_traces(hole=0.4, sort=False, hoverinfo='label', textinfo='none',showlegend=False)
         fig3.update_layout(height=500, width=700)
         st.plotly_chart(fig3)
