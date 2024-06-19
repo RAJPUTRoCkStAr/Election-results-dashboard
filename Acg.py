@@ -1,5 +1,7 @@
 import streamlit as st
-from Acgsecond import andhra_show, odisha_show
+import pandas as pd
+from Andhra_details import andhra_show
+from Odisha_details import odisha_show
 
 def acg_show():
     session_state = st.session_state
