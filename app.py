@@ -20,11 +20,12 @@ if selected_constituency:
         constituency = pages[pages['constituency'] == selected_constituency]
         selected_state = constituency['state'].iloc[0] if not constituency.empty else "Unknown State"
         st.subheader("General Election to Parliamentary Constituencies: Trends & Results June-2024")
-        col1,col2,col3 = st.columns([2,3,1])
+        col1,col2,col3 = st.columns([2,2,2])
         with col1:
-            st.subheader("Parliamentary Constituency",divider="green")
+            st.empty()
         with col2:
-            st.subheader(f" :blue[-{selected_constituency} ({selected_state})]",divider="green")
+            st.subheader("Parliamentary Constituency -")
+            st.subheader(f":blue[{selected_constituency} ({selected_state})]",divider="green")
         with col3:
             st.empty()
         if not constituency.empty:
@@ -55,16 +56,18 @@ elif selected_party:
         st.header(f":blue[Winning Candidate ({selected_party})]", divider="green")
     with col6:
         st.empty()
-    try:
-        pages = pd.read_csv(f'data/partywise/{selected_party}.csv')
+        with col5:
+            try:
+                pages = pd.read_csv(f'data/partywise/{selected_party}.csv')
 
-        def create_clickable_party(constituency):
-            return f'<a href="?constituency={constituency}" target="_blank">{constituency}</a>'
+                def create_clickable_party(constituency):
+                    return f'<a href="?constituency={constituency}" target="_blank">{constituency}</a>'
 
-        pages['Parliament Constituency'] = pages.apply(lambda row: create_clickable_party(row['Parliament Constituency']), axis=1)
-        st.markdown(pages.to_html(escape=False, index=False), unsafe_allow_html=True)
-    except FileNotFoundError:
-        st.error(f"No data available for {selected_party}")
+                pages['Parliament Constituency'] = pages.apply(lambda row: create_clickable_party(row['Parliament Constituency']), axis=1)
+                st.markdown(pages.to_html(na_rep='None',escape=False, index=False,justify="center",col_space = 55), unsafe_allow_html=True)
+        
+            except FileNotFoundError:
+                st.error(f"No data available for {selected_party}")
 
 elif selected_state:
     st.header("General Election to Parliamentary Constituencies: Trends & Results June-2024")
@@ -97,8 +100,8 @@ else:
         with col11:
             options = [
                 "Select State Wise",
-                "Andaman & Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
-                "Chandigarh", "Chhattisgarh", "Dadra & Nagar Haveli and Daman & Diu", "Goa", "Gujarat", "Haryana", "Himachal Pradesh",
+                "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
+                "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Goa", "Gujarat", "Haryana", "Himachal Pradesh",
                 "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh",
                 "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "NCT OF Delhi", "Odisha", "Puducherry",
                 "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
@@ -156,7 +159,7 @@ else:
                 return f'<a href="?party={party}" target="_blank">{won}</a>'
             st.subheader(':red-background[Party Wise Results Status]')
             second_data['Won'] = second_data.apply(lambda row: create_clickable_link(row['Party'], row['Won']), axis=1)
-            st.markdown(second_data.to_html(escape=False, index=False), unsafe_allow_html=True)
+            st.markdown(second_data.to_html(escape=False, index=False,justify="center"), unsafe_allow_html=True)
 
     elif tab == 'Assembly Constituency General':
         acg_show()

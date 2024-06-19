@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from geopy.geocoders import Nominatim
+# from geopy.geocoders import Nominatim
 def ac_lss(selected_option,da):
     da['votes'] = pd.to_numeric(da['votes'], errors='coerce')
     states = da['state'].unique()
