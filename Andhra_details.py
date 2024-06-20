@@ -144,7 +144,7 @@ def andhra_show():
         fig1.update_layout(height=500, width=700)
         st.plotly_chart(fig1)
 
-    ad_button = st.button('All Constituencies at a glance')
+    ad_button = st.button('All Constituencies at a glance',use_container_width=True,type="primary")
     if ad_button:
         ad_lss('Andhra Pradesh', data)
     Dt_btn = st.button("Details Related to Constituencies of Andhra Pradesh", use_container_width=True,type="primary")
