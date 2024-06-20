@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objs as go
-
+import warnings
+warnings.filterwarnings("ignore")
 def ac_lss(selected_option,da):
     da['votes'] = pd.to_numeric(da['votes'], errors='coerce')
     states = da['state'].unique()
@@ -160,3 +160,4 @@ def stwise_show(selected_option):
     ac_button = st.button('All Constituencies at a glance',use_container_width=True,type="primary")
     if ac_button:
         ac_lss(selected_option,da)
+warnings.resetwarnings()

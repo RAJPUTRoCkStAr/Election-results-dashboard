@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
+import warnings
+warnings.filterwarnings("ignore")
 def ad_lss(selected_option, data):
     data['votes'] = pd.to_numeric(data['votes'], errors='coerce')
     states = data['state'].unique()
@@ -172,3 +173,4 @@ def andhra_show():
         st.data_editor(wonan,column_config={
             "Image Preview":st.column_config.ImageColumn("Preview Image")
         },hide_index=True,use_container_width=True,width=800,height=700,column_order=['State','Constituency','Party Name','Name','Image Preview','Result','Votes','Margin'])
+warnings.resetwarnings()

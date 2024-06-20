@@ -5,6 +5,10 @@ from streamlit_option_menu import option_menu
 from Acb import acb_show
 from Acg import acg_show
 from Stwise import stwise_show
+import warnings
+warnings.filterwarnings("ignore")
+
+
 
 st.set_page_config(layout="wide", page_title='Election Results')
 
@@ -166,3 +170,4 @@ else:
 
     elif tab == 'Assembly Constituency Bye':
         acb_show()
+warnings.resetwarnings()

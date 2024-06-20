@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 from Andhra_details import andhra_show
 from Odisha_details import odisha_show
-
+import warnings
+warnings.filterwarnings("ignore")
 def acg_show():
     session_state = st.session_state
     if 'page' not in session_state:
@@ -116,3 +117,4 @@ def acg_show():
         andhra_show()
     elif session_state.page == 'Odisha':
         odisha_show()
+warnings.resetwarnings()
