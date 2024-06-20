@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-# from geopy.geocoders import Nominatim
+import plotly.graph_objs as go
+
 def ac_lss(selected_option,da):
     da['votes'] = pd.to_numeric(da['votes'], errors='coerce')
     states = da['state'].unique()
@@ -19,24 +20,32 @@ def ac_lss(selected_option,da):
         constituencies = sorted(df_state['constituency'].unique())
         constituency_details = []
         for constituency in constituencies:
-                df_constituency = df_state[df_state['constituency'] == constituency]
-                df_constituency = df_constituency.sort_values(by='votes', ascending=False)
-                leading_candidate = df_constituency.iloc[0]['name']
-                leading_party = df_constituency.iloc[0]['party_name']
-                trailing_candidate = df_constituency.iloc[-1]['name']
-                trailing_party = df_constituency.iloc[-1]['party_name']
-                margin = df_constituency.iloc[0]['votes'] - df_constituency.iloc[1]['votes']
-                status = 'Result Declared'
-                constituency_details.append({'Constituency': constituency,
-                                          'Leading Candidate': leading_candidate,
-                                          'Leading Party': leading_party,
-                                          'Trailing Candidate': trailing_candidate,
-                                          'Trailing Party': trailing_party,
-                                          'Margin': margin,
-                                          'Status': status})
-
+            df_constituency = df_state[df_state['constituency'] == constituency]
+            df_constituency = df_constituency.sort_values(by='votes', ascending=False)
+            image = df_constituency.iloc[0]['img_link']
+            leading_candidate = df_constituency.iloc[0]['name']
+            leading_party = df_constituency.iloc[0]['party_name']
+            trailing_candidate = df_constituency.iloc[-1]['name']
+            timage = df_constituency.iloc[-1]['img_link']
+            trailing_party = df_constituency.iloc[-1]['party_name']
+            margin = df_constituency.iloc[0]['votes'] - df_constituency.iloc[1]['votes']
+            status = 'Result Declared'
+            constituency_details.append({
+                'Constituency': constituency,
+                'Image Preview':image,
+                'Leading Candidate': leading_candidate,
+                'Leading Party': leading_party,
+                'Trailing Candidate': trailing_candidate,
+                'Image Previ': timage,
+                'Trailing Party': trailing_party,
+                'Margin': margin,
+                'Status': status
+            })
         constituency_details_df = pd.DataFrame(constituency_details)
-        st.dataframe(constituency_details_df,hide_index=True,use_container_width=True)
+        st.data_editor(constituency_details_df,column_config={
+           "Image Preview": st.column_config.ImageColumn("Preview Image"),
+        "Image Previ": st.column_config.ImageColumn("Preview Image"),
+    },hide_index=True,use_container_width=True,width=800,column_order=['Constituency','Leading Party','Leading Candidate','Image Preview','Trailing Candidate','Image Previ','Margin'])
     else:
         st.write("State not found in the data.")    
 
@@ -115,29 +124,22 @@ def stwise_show(selected_option):
     with col3:
         st.dataframe(party_counted,hide_index=True,use_container_width=True)
     with col4:
-        col5,col6 = st.columns([2,3])
-        with col5:
-            st.subheader(f':red-background[Constituency Wise Results]')
-        with col6:
-            # api_key = 'df5939cb282b454096bf26602620f87e'
-            # def get_coordinates(location, api_key):
-            #     geolocator = OpenCage(api_key)
-            #     location = geolocator.geocode(location)
-            #     if location:
-            #         latitude = location.latitude
-            #         longitude = location.longitude
-            #         return latitude, longitude
-            #     else:
-            #         return None, None
-            # fig5 = px.choropleth_mapbox(da, lat="latitude", lon="longitude",
-            #                  color="Party Name",
-            #                  mapbox_style="carto-positron",  
-            #                  zoom=3,  
-            #                  center={"lat": 24, "lon": 78}  
-            #                  )
-            # fig5.update_layout(margin={"r":0, "t":0, "l":0, "b":0})
-            # st.plotly_chart(fig5)
-            st.write('i m coming soon')
+        st.subheader(":red-background[Party Wise Results by Constituency]")
+        def get_winners_by_state(state_name):
+            state_winners = won_data_sorted[won_data_sorted['state'] == state_name]
+            return state_winners[['constituency', 'party_name']]
+        state_winners_data = get_winners_by_state(selected_option)
+        party_counts = state_winners_data.groupby(['party_name', 'constituency']).size().reset_index(name='won_count')
+        for party, group in party_counts.groupby('party_name'):
+            party_info_entry = party_info.get(party, {"color": "transparent", "short_name": party})
+            color = party_info_entry["color"]
+            short_name = party_info_entry["short_name"]
+        party_coun = pd.DataFrame(party_counts)
+        fig = px.bar(party_coun, x='party_name', y='won_count', color='constituency', 
+             labels={'won_count': 'Won Count', 'constituency': 'Constituency'},
+             color_discrete_sequence=px.colors.qualitative.Set3)
+        fig.update_layout(barmode='group', yaxis_title='Won Count',showlegend=False)
+        st.plotly_chart(fig)
     col7,col8 = st.columns([2,2])
     with col7:
         st.subheader(':red-background[Party Wise Vote Share]')

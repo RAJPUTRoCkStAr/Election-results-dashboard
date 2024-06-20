@@ -20,23 +20,30 @@ def ac_lss(selected_option, data):
         for constituency in constituencies:
             df_constituency = df_state[df_state['constituency'] == constituency]
             df_constituency = df_constituency.sort_values(by='votes', ascending=False)
+            image = df_constituency.iloc[0]['img_link']
             leading_candidate = df_constituency.iloc[0]['name']
             leading_party = df_constituency.iloc[0]['party_name']
             trailing_candidate = df_constituency.iloc[-1]['name']
+            timage = df_constituency.iloc[-1]['img_link']
             trailing_party = df_constituency.iloc[-1]['party_name']
             margin = df_constituency.iloc[0]['votes'] - df_constituency.iloc[1]['votes']
             status = 'Result Declared'
             constituency_details.append({
                 'Constituency': constituency,
+                'Image Preview':image,
                 'Leading Candidate': leading_candidate,
                 'Leading Party': leading_party,
                 'Trailing Candidate': trailing_candidate,
+                'Image Previ': timage,
                 'Trailing Party': trailing_party,
                 'Margin': margin,
                 'Status': status
             })
         constituency_details_df = pd.DataFrame(constituency_details)
-        st.dataframe(constituency_details_df, hide_index=True, use_container_width=True)
+        st.data_editor(constituency_details_df,column_config={
+           "Image Preview": st.column_config.ImageColumn("Preview Image"),
+        "Image Previ": st.column_config.ImageColumn("Preview Image"),
+    },hide_index=True,use_container_width=True,width=800,column_order=['Constituency','Leading Party','Leading Candidate','Image Preview','Trailing Candidate','Image Previ','Margin'])
     else:
         st.write("State not found in the data.")
 
@@ -94,13 +101,25 @@ def odisha_show():
 
     col7, col8 = st.columns([2, 2])
     with col7:
-        st.dataframe(party_counted,use_container_width=True)
+        st.dataframe(party_counted,use_container_width=True,hide_index=True)
     with col8:
-        col9, col10 = st.columns([2, 3])
-        with col9:
-            st.subheader(f':red-background[Constituency Wise Results]')
-        with col10:
-            st.write('I am coming soon')
+        st.subheader(":red-background[Party Wise Results by Constituency]")
+        def get_winners_by_state():
+            won_data_sorted = won_data.sort_values(by='state')
+            state_winners = won_data_sorted[won_data_sorted['state'] == 'Odisha']
+            return state_winners[['constituency', 'party_name']]
+        state_winners_data = get_winners_by_state()
+        party_counts = state_winners_data.groupby(['party_name', 'constituency']).size().reset_index(name='won_count')
+        for party, group in party_counts.groupby('party_name'):
+            party_info_entry = party_info.get(party, {"color": "transparent", "short_name": party})
+            color = party_info_entry["color"]
+            short_name = party_info_entry["short_name"]
+        party_coun = pd.DataFrame(party_counts)
+        fig = px.bar(party_coun, x='party_name', y='won_count', color='constituency', 
+             labels={'won_count': 'Won Count', 'constituency': 'Constituency'},
+             color_discrete_sequence=px.colors.qualitative.Set3)
+        fig.update_layout(barmode='group', yaxis_title='Won Count',showlegend=False)
+        st.plotly_chart(fig)
 
     col11, col12 = st.columns([2, 2])
     with col11:
@@ -125,3 +144,28 @@ def odisha_show():
     od_button = st.button('All Constituencies at a glance', use_container_width=True, type="primary")
     if od_button:
         ac_lss('Odisha', data)
+    Dt_btn = st.button("Details Related to Constituencies of Odisha", use_container_width=True,type="primary")
+    if Dt_btn:
+        col7,col8,col9 = st.columns([1,3,1])
+        with col7:
+            st.empty()
+        with col8:
+            st.subheader(':red[Constituency Wise Detailed Results of Odisha]',divider="rainbow",help="Details of the winners in each constituency")
+        with col9:
+            st.empty()
+        df_state = data[data['state'] == 'Odisha']
+        wonan = df_state[df_state['won_status'] == 'won']
+        wonan.drop(columns=['ref'],inplace=True)
+        wonan.rename(columns={
+                'state': 'State',
+                'constituency': 'Constituency',
+                'img_link': 'Image Preview',
+                'won_status': 'Result',
+                'votes': 'Votes',
+                'votes_percentage': 'Margin',
+                'name': 'Name',
+                'party_name': 'Party Name',
+                }, inplace=True)
+        st.data_editor(wonan,column_config={
+            "Image Preview":st.column_config.ImageColumn("Preview Image")
+        },hide_index=True,use_container_width=True,width=800,height=700,column_order=['State','Constituency','Party Name','Name','Image Preview','Result','Votes','Margin'])

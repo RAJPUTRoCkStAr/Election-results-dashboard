@@ -32,16 +32,16 @@ if selected_constituency:
             num_constituencies = len(constituency)
             columns = st.columns(min(5, num_constituencies))
             for index, row in constituency.iterrows():
-                textcolor = "green" if row['won_status'] == 'won' else "red"
+                textcolor = "lightgreen" if row['won_status'] == 'won' else "red"
                 with columns[index % 5]:
                     st.markdown(
                         f"""
-                        <div class="card" style="background-color: #f5f5f5; border-radius: 10px; padding: 15px; margin: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 2px solid {textcolor}; transition: transform 0.3s; text-align: center;">
+                        <div class="card" style="background-color: transparent; border-radius: 10px; padding: 15px; margin: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 2px solid {textcolor}; transition: transform 0.3s; text-align: center;">
                             <img src="{row['img_link']}" style="width: 200px; height: 200px; border-radius: 50%; border: 3px solid {textcolor}; margin-bottom: 10px;">
                             <p style="color: {textcolor}; font-weight: 600; text-transform: capitalize;">{row['won_status']}</p>
                             <p style="color: {textcolor};">{row["votes"]}</p>
-                            <p style="font-size: 17.6px; font-weight: 600; color: #094DE0;">{row["name"]}</p>
-                            <p style="color: blue; font-weight: 500; font-size: 16px;">{row["party_name"]}</p>
+                            <p style="font-size: 17.6px; font-weight: 600; color: purple;">{row["name"]}</p>
+                            <p style="color: lightblue; font-weight: 500; font-size: 16px;">{row["party_name"]}</p>
                         </div>
                         """, unsafe_allow_html=True
                     )
