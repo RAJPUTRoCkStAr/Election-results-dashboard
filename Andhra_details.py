@@ -12,7 +12,7 @@ def ad_lss(selected_option, data):
         with col1:
             st.empty()
         with col2:
-            st.subheader(f":blue[{selected_option}]", divider="red")
+            st.subheader(f":blue[{selected_option}]")
         with col3:
             st.empty()
         df_state = data[data['state'] == selected_option]
@@ -51,7 +51,7 @@ def ad_lss(selected_option, data):
 
 
 def andhra_show():
-    st.subheader(f':blue[Andhra Pradesh Election Results]',divider="red")
+    st.subheader(f':blue[Andhra Pradesh Election Results]')
     data = pd.read_csv('data/secpageda.csv')
     won_data = data[data['won_status'] == 'won']
     stat_data = won_data[won_data['state'] == 'Andhra Pradesh']
@@ -144,7 +144,7 @@ def andhra_show():
         fig1.update_layout(height=500, width=700)
         st.plotly_chart(fig1)
 
-    ad_button = st.button('All Constituencies at a glance', use_container_width=True, type="primary")
+    ad_button = st.button('All Constituencies at a glance')
     if ad_button:
         ad_lss('Andhra Pradesh', data)
     Dt_btn = st.button("Details Related to Constituencies of Andhra Pradesh", use_container_width=True,type="primary")
@@ -153,7 +153,7 @@ def andhra_show():
         with col7:
             st.empty()
         with col8:
-            st.subheader(':red[Constituency Wise Detailed Results of Andhra Pradesh]',divider="rainbow",help="Details of the winners in each constituency")
+            st.subheader(':red[Constituency Wise Detailed Results of Andhra Pradesh]',help="Details of the winners in each constituency")
 
         with col9:
             st.empty()
