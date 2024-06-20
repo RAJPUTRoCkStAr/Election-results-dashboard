@@ -63,7 +63,7 @@ def acg_show():
             </div>
         """, unsafe_allow_html=True)
 
-        andhra_button = st.button("Andhra Pradesh",use_container_width=True)
+        andhra_button = st.button("Andhra Pradesh")
         if andhra_button:
             session_state.page = 'Andhra Pradesh'
 
@@ -109,7 +109,7 @@ def acg_show():
             </div>
         """, unsafe_allow_html=True)
     
-        odisha_button = st.button("Odisha",use_container_width=True)
+        odisha_button = st.button("Odisha")
         if odisha_button:
             session_state.page = 'Odisha'
 
