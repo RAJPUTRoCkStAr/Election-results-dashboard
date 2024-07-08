@@ -16,7 +16,7 @@ To run the application locally, follow these steps:
 1. **Clone the repository**:
     ```bash
     git clone https://github.com/RAJPUTRoCkStAr/Election-py.git
-    cd election-results-dashboard
+    cd Election-results-dashboard
     ```
 
 2. **Install the required dependencies**:
