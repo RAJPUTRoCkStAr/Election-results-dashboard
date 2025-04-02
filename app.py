@@ -8,9 +8,7 @@ from Stwise import stwise_show
 import warnings
 warnings.filterwarnings("ignore")
 
-
-
-st.set_page_config(layout="wide", page_title='Election Results')
+st.set_page_config(layout="wide", page_title='Election Results',page_icon="⭐")
 
 query_params = st.experimental_get_query_params()
 selected_party = query_params.get("party", [None])[0]
